@@ -39,7 +39,7 @@ namespace BlogYou.Models
         public IFormFile Image { get; set; }
 
         //Navigation Properties
-
+        [Display(Name = "Author")]
         public virtual BlogUser BlogUser { get; set; }
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 
