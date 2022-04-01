@@ -13,7 +13,7 @@ namespace BlogYou.Models
     public class Post
     {
         public int Id { get; set; }
-        public int BlogUserId { get; set; }
+        public int BlogId { get; set; }
         public string AuthorId { get; set; }
 
         [Required]
