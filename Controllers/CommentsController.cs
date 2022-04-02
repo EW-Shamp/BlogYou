@@ -20,11 +20,31 @@ namespace BlogYou.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
+
+        public async Task<IActionResult> UnmoderatedIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+             //==== Calls all comments that have not been moderated
+           var unmoderatedComments = await _context.Comments.Where(c => c.Moderated == null).ToListAsync();
+           return View("Index", unmoderatedComments);
         }
+
+        public async Task<IActionResult> ModeratedIndex()
+        {
+             //==== Calls all comments that have been moderated
+             var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
+             return View("Index", moderatedComments);
+        }
+
+        //public async Task<IactionResult> DeletedIndex()
+        //{
+            //==== Calls all comments that have been (probably soft) deleted
+       // }
+
 
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
