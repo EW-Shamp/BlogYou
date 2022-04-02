@@ -48,6 +48,21 @@ namespace BlogYou.Controllers
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
 
+
+
+            //==== Will be coded for creating tags for the post
+           // foreach (var tag in TagValues)
+           // {
+           //     _context.Add(new Tag()
+           //     {
+           //         PostId = Post.Id,
+           //         AuthorId = authorId,
+           //         text = tag
+           //     });
+           // }
+
+            // await _context.SaveChangesAsync();
+
             return View();
         }
 
