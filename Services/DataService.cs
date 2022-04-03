@@ -2,6 +2,7 @@
 using BlogYou.Enums;
 using BlogYou.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace BlogYou.Services
 
         public async Task ManageDataAsync()
         {
+            //Make Database from Migrations
+            await _dbContext.Database.MigrateAsync();
+
             //Seeding Roles into the system
             await SeedRolesAsync();
 
@@ -49,6 +53,8 @@ namespace BlogYou.Services
 
         private async Task SeedUsersAsync()
         {
+           
+
             //If already users in system DO NOTHING
             if (_dbContext.Users.Any())
             {
@@ -61,15 +67,16 @@ namespace BlogYou.Services
             //Step 1: Creates a new instance of blog user
             var adminUser = new BlogUser()
             {
-                Email = "ew_shamp@admin.com",
-                UserName = "ew_shamp@admin.com",
-                FirstName = "Eric",
-                LastName = "Shamp",
+                Email = "admin@admin.com",
+                UserName = "admin@admin.com",
+                PhoneNumber = "(800) 555-1212",
+                FirstName = "Ad",
+                LastName = "MIN",
                 EmailConfirmed = true,
             };
 
             //Step 2: Use UserManager to create a new user that is defined by adminUser
-            await _userManager.CreateAsync(adminUser, "ABC&123!");
+            await _userManager.CreateAsync(adminUser, "Abc&123!");
 
             //Step 3: Add this user to administrator role
             await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
@@ -86,7 +93,7 @@ namespace BlogYou.Services
             };
 
             //Step 2: Use UserManager to create a new user that is defined by modUser
-            await _userManager.CreateAsync(modUser, "ABC&123!");
+            await _userManager.CreateAsync(modUser, "Abc&123!");
 
             //Step 3: Add this user to modUser role
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
@@ -98,13 +105,13 @@ namespace BlogYou.Services
             {
                 Email = "user@user.com",
                 UserName = "user@user.com",
-                FirstName = "Us",
-                LastName = "Er",
+                FirstName = "Use",
+                LastName = "Ere",
                 EmailConfirmed = true
             };
 
             //Step 2: Use UserManager to create a new user that is defined by modUser
-            await _userManager.CreateAsync(userUser, "ABC&123!");
+            await _userManager.CreateAsync(userUser, "Abc&123!");
 
             //Step 3: Add this user to modUser role
             await _userManager.AddToRoleAsync(userUser, BlogRole.User.ToString());
