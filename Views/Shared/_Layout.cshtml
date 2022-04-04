@@ -15,8 +15,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/styles.css" rel="stylesheet" />
     <!-- SummerNote -->
-    <link href="~/css/summernote-lite.min.css" rel="stylesheet" />
-
+    <link href="~/css/summernote-lite.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Navigation-->
@@ -50,9 +49,9 @@
         </div>
     </header>
     <!-- Main Content-->
-    
-        @RenderBody()
-   
+
+    @RenderBody()
+
     <!-- Footer-->
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
@@ -94,7 +93,7 @@
     <!-- Core theme JS-->
     <script src="~/js/scripts.js"></script>
     <!-- SummerNote -->
-    <script src="~/js/summernote-lite.min.js"></script>
+    <script src="~/js/summernote-lite.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
