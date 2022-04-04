@@ -67,8 +67,8 @@ namespace BlogYou.Services
             //Step 1: Creates a new instance of blog user
             var adminUser = new BlogUser()
             {
-                Email = "admin@admin.com",
-                UserName = "admin@admin.com",
+                Email = "ew_shamp@post.com",
+                UserName = "ew_shamp@post.com",
                 PhoneNumber = "(800) 555-1212",
                 FirstName = "Ad",
                 LastName = "MIN",
