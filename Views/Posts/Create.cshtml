@@ -5,17 +5,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create</h1>
 
-<h4>Post</h4>
+<h4 class="text-center">Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12 d-flex justify-content-center">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="BlogId" class="control-label"></label>
-                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
+                <select asp-for="BlogId" class="form-select" asp-items="ViewBag.BlogId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ReadyStatus" class="control-label"></label>
-                <select asp-for="ReadyStatus" class="form-control" asp-items="@Html.GetEnumSelectList<ReadyStatus>()"></select>
+                <select asp-for="ReadyStatus" class="form-select" asp-items="@Html.GetEnumSelectList<ReadyStatus>()"></select>
                 <span asp-validation-for="ReadyStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,7 +42,7 @@
                 <input type="file" asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group py-4">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -54,10 +54,16 @@
 </div>
 
 
-<div>
+<div class="d-flex justify-content-center">
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    //Default font size but not for placeholder...
+    $('#Content').summernote({
+        placeholder: "Content"
+    });
+</script>
 }
