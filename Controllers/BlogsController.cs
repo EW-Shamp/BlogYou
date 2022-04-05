@@ -10,6 +10,7 @@ using BlogYou.Models;
 using BlogYou.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogYou.Controllers
 {
@@ -70,11 +71,8 @@ namespace BlogYou.Controllers
             {
                 blog.Created = DateTime.Now;
                 blog.BlogUserId = _userManager.GetUserId(User);
-
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                 blog.ContentType = _imageService.ContentType(blog.Image);
-
-
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -105,7 +103,7 @@ namespace BlogYou.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image,")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,")] Blog blog, IFormFile newImage)
         {
             if (id != blog.Id)
             {
@@ -116,8 +114,24 @@ namespace BlogYou.Controllers
             {
                 try
                 {
-                    blog.Updated = DateTime.Now;
-                    _context.Update(blog);
+                    var newBlog = await _context.Blogs.FindAsync(blog.Id);
+                    newBlog.Updated = DateTime.Now;
+                    if(newBlog.Name != blog.Name)
+                    {
+                        newBlog.Name = blog.Name;
+                    }
+
+                    if(newBlog.Description != blog.Description)
+                    {
+                        newBlog.Description = blog.Description;
+                    }
+                    
+                    if(newImage is not null)
+                    {
+                        newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        newBlog.ContentType = _imageService.ContentType(newImage);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
