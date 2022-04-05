@@ -72,6 +72,7 @@ namespace BlogYou.Services
                 PhoneNumber = "(800) 555-1212",
                 FirstName = "Ad",
                 LastName = "MIN",
+                DisplayName = "Adman",
                 EmailConfirmed = true,
             };
 
@@ -89,6 +90,7 @@ namespace BlogYou.Services
                 UserName = "Moderator@moderator.com",
                 FirstName = "Mod",
                 LastName = "Erator",
+                DisplayName = "ModMan",
                 EmailConfirmed = true
             };
 
@@ -107,6 +109,7 @@ namespace BlogYou.Services
                 UserName = "user@user.com",
                 FirstName = "Use",
                 LastName = "Ere",
+                DisplayName = "UseMe",
                 EmailConfirmed = true
             };
 
