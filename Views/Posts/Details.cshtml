@@ -14,5 +14,24 @@
     </div>
 </article>
 
+<hr/>
+<hr/>
+
+<article>
+    <div class="row">
+        <div class="col text-center font-weight-bold">
+            <h3>Custom Post Tags</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center mb-2">
+            @foreach(var tag in Model.Tags)
+            {
+                <a class="btn btn-sm btn-warning" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+            }
+        </div>
+    </div>
+</article>
+
 <!-- Displaying Comments Related to this Post-->
 <!-- Display the image of the Comment's Author-->

@@ -9,6 +9,7 @@ using BlogYou.Data;
 using BlogYou.Models;
 using BlogYou.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogYou.Controllers
 {
@@ -17,14 +18,17 @@ namespace BlogYou.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
         public PostsController(ApplicationDbContext context,
                                ISlugService slugService,
-                               IImageService imageService)
+                               IImageService imageService,
+                               UserManager<BlogUser> userManager)
         {
             _context = context;
             _slugService = slugService;
             _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Posts
@@ -34,15 +38,18 @@ namespace BlogYou.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Blog)
+                .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
@@ -55,21 +62,6 @@ namespace BlogYou.Controllers
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
-
-
-
-            //==== Will be coded for creating tags for the post
-           // foreach (var tag in TagValues)
-           // {
-           //     _context.Add(new Tag()
-           //     {
-           //         PostId = Post.Id,
-           //         AuthorId = authorId,
-           //         text = tag
-           //     });
-           // }
-
-            // await _context.SaveChangesAsync();
 
             return View();
         }
@@ -84,12 +76,14 @@ namespace BlogYou.Controllers
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+                var authorId = _userManager.GetUserId(User);
+                post.AuthorId = authorId;
 
                 //Use the _imageService to store the incomoing user specified image
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
 
-                //Creat the slug and determine if unique
+                //Create the slug and determine if unique
                 var slug = _slugService.UrlFriendly(post.Title);
                 if (!_slugService.IsUnique(slug))
                 {
@@ -101,6 +95,20 @@ namespace BlogYou.Controllers
 
                 post.Slug = slug;
                 _context.Add(post);
+                await _context.SaveChangesAsync();
+
+                foreach(var tagText in tagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        BlogUserId = authorId,
+                        Text = tagText
+                    });
+                }
+
+
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
