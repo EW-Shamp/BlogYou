@@ -10,6 +10,8 @@ using BlogYou.Models;
 using BlogYou.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using BlogYou.Enums;
+using X.PagedList;
 
 namespace BlogYou.Controllers
 {
@@ -35,6 +37,25 @@ namespace BlogYou.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Posts.ToListAsync());
+        }
+
+        //BlogPostIndex
+        public async Task<IActionResult> BlogPostIndex(int? id, int? page)
+        {
+            if(id is null)
+            {
+                return NotFound();
+            }
+
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var posts = await _context.Posts
+                .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                .OrderByDescending(p => p.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(posts);
         }
 
         // GET: Posts/Details/5
