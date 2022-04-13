@@ -1,43 +1,76 @@
 ﻿@using BlogYou.Models
+@using BlogYou.Services
+@using BlogYou.Enums
+@using Microsoft.AspNetCore.Identity 
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 
+@inject IImageService _imageService
+@inject UserManager<BlogUser> _userManager
 @model IPagedList<Blog>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-7">
-            @foreach(var blog in Model)
-            {
-                <div class="post-preview">
-                    <a asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
-                        <h2 class="post-title">@blog.Name</h2>
-                        <h3 class="post-subtitle">@blog.Description</h3>
-                    </a>
-                    <p class="post-meta">
-                        Authored by
-                        <a href="#!">@blog.BlogUser.FullName</a>
-                        on @blog.Created.ToString("MMM dd, yyyy")
-                    </p>
+<div class="row">
+    @foreach (var blog in Model)
+     {
+        <div class="col-sm-12 col-md-6 col-lg-4 mt-2 py-2">
+            <div class="card border-dark px-3 py-3">
+                <div class="d-flex justify-content-center">
+                    <img class="card-img-top mt-2" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
                 </div>
-                <hr class="my-4" />
-            }
-            
-            
+                <div class="card-body text-center">
+                    <div class="card-title-bg">
+                        <hr class="card-hr bg-dark" />
+                        <h5 class="card-title"><a  asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
+                            @blog.Name
+                            </a></h5>
+                        <hr class="card-hr bg-dark" />
+                    </div>
 
-            <!-- Pager-->
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div>
+                        <p class="card-text cftooltip"
+                           data-bs-toggle="tooltip"
+                           data-placement="top"
+                           title=""
+                           data-original-title="@blog.Description">@blog.Description</p>
+                    </div>
+
+                    <br />
+                    <div class="text-center">
+                        <a class="btn btn-dark btn-sm note-btn-block mb-2" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">
+                            Read More
+                        </a>
+                    </div>
+
+                    @if (User.IsInRole(BlogRole.Administrator.ToString()))
+                     {
+                        <div class="text-center">
+                            <a class="btn btn-dark btn-sm note-btn-block mb-2" asp-action="Create" asp-controller="Posts" asp-route-id="@blog.Id">
+                                Create
+                            </a>
+                        </div>
+                     }
+
+                    @if (User.IsInRole(BlogRole.Administrator.ToString()))
+                     {
+                        <div class="text-center">
+                            <a class="btn btn-danger btn-sm note-btn-block" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">
+                                Edit
+                            </a>
+                        </div>
+                     }
+                </div>
+            </div>
         </div>
-    </div>
+     }
 </div>
 
 <!-- Add paging Controls here  -->
-<div class="row">
+<div class="row mt-3">
     <div class="col h3">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     </div>
@@ -49,8 +82,27 @@
          new PagedListRenderOptionsBase
          {
              LiElementClasses = new string[] { "page-item" },
-             PageClasses = new string[] { "page-link" }
-         });
+             PageClasses = new string[] { "page-link " }
+         })
     </div>
 </div>
 
+@section Scripts {
+
+    <script>
+        var swalMsg = '@TempData["SweetAlert"]'
+        if (swalMsg != "") {
+            Swal.fire({
+                icon: 'success',
+                title: swalMsg,
+                timer: 2500
+
+            })
+        }
+
+        $(document).ready(function () {
+            $("p").tooltip();
+        });
+
+    </script>
+}

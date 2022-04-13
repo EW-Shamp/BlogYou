@@ -1,5 +1,9 @@
-﻿button.btn-sm, a.btn-sm{
+﻿button.btn-sm, a.btn-sm, input.btn-sm {
     border-radius: 10px;
+}
+
+a:hover {
+    color: darkred;
 }
 
 option{
@@ -9,4 +13,64 @@ option{
 div.swal2-container.swal2-center.swal2-backdrop-show > div {
     outline: 4px solid black;
     border: 2px solid red;
+}
+
+.search-term {
+    border: 3px solid;
+    border-color: #212529;
+    border-radius: 5px;
+}
+
+.search-button, .new-post, .logout, .login-button,
+.register-button, .kustom-button {
+    background: #C02425; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #F0CB35, #C02425); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #F0CB35, #C02425); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border: 3px solid;
+    border-color: #212529;
+    border-radius: 5px;
+}
+
+    .search-button:hover, .new-post:hover, .logout:hover, .login-button:hover,
+    .register-button:hover, .kustom-button:hover {
+        color: darkred  !important;
+    }
+
+.card {
+    border-radius: 5px;
+}
+
+.card-img-top {
+    border-radius: 5px;
+    height: 350px;
+    width: 90%;
+}
+
+.card-hr {
+    height: 5px !important;
+}
+
+.card-title-bg {
+    background: #C02425; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #F0CB35, #C02425); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #F0CB35, #C02425); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.page-item.active .page-link {
+    background-color: #212529 !important;
+    border-color: #212529 !important;
+}
+
+.page-link:focus {
+    color: #212529 !important;
+    box-shadow: 0 0 0 0.25rem rgb(113 118 118 / 25%) !important;
+}
+
+.page-link:hover {
+    color: #212529 !important;
+    border-color: #212529 !important;
+}
+
+.social:hover {
+    color: darkgrey !important;
 }
