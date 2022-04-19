@@ -3894,7 +3894,7 @@ textarea.form-control-lg {
   }
 }
 .nav-link:hover, .nav-link:focus {
-  color: #0085A1;
+  color: #000d10;
 }
 .nav-link.disabled {
   color: #6c757d;
@@ -3933,11 +3933,17 @@ textarea.form-control-lg {
   background: none;
   border: 0;
 }
+
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #0085A1;
+   color: #fff;
+   background-color: #000d10;
 }
+
+/* added to show link selection */
+.nav-pills .nav-link:hover {
+   color: #999999;
+}    
 
 .nav-fill > .nav-link,
 .nav-fill .nav-item {
