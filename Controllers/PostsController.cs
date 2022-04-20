@@ -80,6 +80,10 @@ namespace BlogYou.Controllers
                 .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+            //ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
+            //ViewData["MainText"] = blog.Name;
+            //ViewData["SubText"] = blog.Description;
+
             return View(posts);
         }
 
@@ -91,13 +95,23 @@ namespace BlogYou.Controllers
                 return NotFound();
             }
 
+            ViewData["Title"] = "Post Details Page";
+
             var post = await _context.Posts
-                .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.BlogUser)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Moderator)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
+
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
 
             var dataVM = new ViewModels.PostDetailViewModel()
             {
@@ -106,11 +120,9 @@ namespace BlogYou.Controllers
             };
 
 
-            if (post == null)
-            {
-                return NotFound();
-            }
 
+
+            //ViewData["HeaderImage"] = "/img/post-bg.jpg";
             ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
             ViewData["MainText"] = post.Title;
             ViewData["SubText"] = post.Abstract;

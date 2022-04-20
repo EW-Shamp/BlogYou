@@ -41,6 +41,10 @@ namespace BlogYou.Controllers
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+            ViewData["HeaderImage"] = "/img/circuit-bg-dark.jpg";
+            ViewData["MainText"] = "BlogYou";
+            ViewData["SubText"] = "A Tech Blog";
+
             return View(await blogs);
         }
 

@@ -1,19 +1,18 @@
-﻿@model BlogYou.Models.Post
+﻿@*@model BlogYou.Models.Post*@
+
+@using BlogYou.ViewModels
 @using BlogYou.Services
 @using Microsoft.AspNetCore.Identity
 @using BlogYou.Enums
 @inject IImageService imageService 
 @inject UserManager<BlogUser> userManager
 
-@{
-    ViewData["Title"] = "Details";
-}
-
+@model PostDetailViewModel
 <article class="mb-4">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                @Html.Raw(Model.Content)
+                @Html.Raw(Model.Post.Content)
             </div>
         </div>
     </div>
@@ -32,7 +31,7 @@
         <div class="col text-center mb-2">
             @foreach(var tag in Model.Tags)
             {
-                <a class="btn btn-sm btn-warning border-2 border-dark" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                <a class="btn btn-sm btn-warning border-2 border-dark" asp-action="TagIndex" asp-route-tag="@tag.ToLower()">#@tag</a>
             }
         </div>
     </div>
@@ -46,7 +45,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <form asp-action="Create" asp-controller="Comments" method="post">
-                @Html.Hidden("PostId", Model.Id)
+                @Html.Hidden("PostId", Model.Post.Id)
                 <div class="form-group">
                     <label class="h2 form-label font-weight-bold">Add Comment</label>
                     <textarea name="body" class="form-control" rows="10"></textarea>
@@ -57,19 +56,19 @@
         }
         else
         {
-            <a class="btn note-btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/BlogPosts/UrlFriendly/@Model.Slug">Login to add comments</a>
+            <a class="btn note-btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-ReturnUrl="~/BlogPosts/UrlFriendly/@Model.Post.Slug">Login to add comments</a>
         }
     </div>
 </div>
 
 <hr />
 
-<span id="commentSection" class="btn btn-sm btn-dark note-btn-block">@Model.Comments.Count Comment(s)</span>
+<span id="commentSection" class="btn btn-sm btn-dark note-btn-block">@Model.Post.Comments.Count Comment(s)</span>
 
 <!-- Displaying comments with commentors associated user image -->
 
 @{ var counter = 0; }
-@foreach (var comment in Model.Comments)
+@foreach (var comment in Model.Post.Comments)
 {
     <div class="media media-border p-0 mb-2 bg-light mt-2 row">
         <div class="col-6 offset-3">
