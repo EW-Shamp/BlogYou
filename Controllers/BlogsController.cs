@@ -30,9 +30,21 @@ namespace BlogYou.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
-            return View(await applicationDbContext.ToListAsync());
+
+            var blogs = _context.Blogs.Where(
+                                    b => b.Posts.Any(p => p.ReadyStatus != Enums.ReadyStatus.ProductionReady))
+                                    .OrderByDescending(b => b.Created);
+
+
+
+            return View(await blogs.ToListAsync());
         }
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
 
         // GET: Blogs/Details/5
         public async Task<IActionResult> Details(int? id)

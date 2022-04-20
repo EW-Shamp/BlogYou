@@ -36,7 +36,14 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("Administrator"))
                     {
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Create">Create Blog</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Create">New Blog</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Posts" asp-action="Create">New Post</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Index">Unfinished Blogs</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Posts" asp-action="Index">Unfinished Posts</a></li>
+                    }
+                    @if (User.IsInRole("Moderator"))
+                    {
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Comments" asp-action="Index">Unmoderated Comments</a></li>
                     }
                     
                 </ul>
@@ -45,13 +52,13 @@
         </div>
     </nav>
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url('/img/circuit-bg-dark.jpg')">
+    <header class="masthead" style="background-image: url(@ViewData["HeaderImage"])">
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="site-heading">
-                        <h1>Blog You</h1>
-                        <span class="subheading">Tech Blogs</span>
+                        <h1>@ViewData["MainText"]</h1>
+                        <span class="subheading">@ViewData["SubText"]</span>
 
                         <form asp-action="SearchIndex" asp-controller="Posts">
                             <div class="input-group mt-5">

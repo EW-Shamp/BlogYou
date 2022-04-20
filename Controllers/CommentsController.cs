@@ -22,26 +22,29 @@ namespace BlogYou.Controllers
             _userManager = userManager;
         }
 
-        // GET: Comments
-        //public async Task<IActionResult> Index()
+        //GET: Comments
+        public async Task<IActionResult> Index()
+        {
+            var comments = _context.Comments.Where(c => c.Moderated == null)
+                                                        .Include(c => c.BlogUser)
+                                                        .Include(c => c.Moderator)
+                                                        .Include(c => c.Post);
+            return View(await comments.ToListAsync());
+        }
+
+        //public async Task<IActionResult> UnmoderatedIndex()
         //{
-        //    var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-        //    return View(await applicationDbContext.ToListAsync());
+        //     //==== Calls all comments that have not been moderated
+        //   var unmoderatedComments = await _context.Comments.Where(c => c.Moderated == null).ToListAsync();
+        //   return View("Index", unmoderatedComments);
         //}
 
-        public async Task<IActionResult> UnmoderatedIndex()
-        {
-             //==== Calls all comments that have not been moderated
-           var unmoderatedComments = await _context.Comments.Where(c => c.Moderated == null).ToListAsync();
-           return View("Index", unmoderatedComments);
-        }
-
-        public async Task<IActionResult> ModeratedIndex()
-        {
-             //==== Calls all comments that have been moderated
-             var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
-             return View("Index", moderatedComments);
-        }
+        //public async Task<IActionResult> ModeratedIndex()
+        //{
+        //     //==== Calls all comments that have been moderated
+        //     var moderatedComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
+        //     return View("Index", moderatedComments);
+        //}
 
         //public async Task<IactionResult> DeletedIndex()
         //{

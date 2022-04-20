@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Unmoderated Comments</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,25 +19,10 @@
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Moderated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModeratedBody)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModerationType)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Post)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BlogUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Moderator)
             </th>
             <th></th>
         </tr>
@@ -58,28 +40,13 @@
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Moderated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModeratedBody)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModerationType)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Post.Abstract)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BlogUser.Id)
+                @Html.DisplayFor(modelItem => item.BlogUser.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Moderator.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@item.Post.Slug">View</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>

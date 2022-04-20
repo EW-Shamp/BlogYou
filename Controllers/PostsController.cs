@@ -47,11 +47,22 @@ namespace BlogYou.Controllers
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
-        // GET: Posts
+        // Index of Posts that are not production ready
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.ToListAsync());
+            var posts = _context.Posts.Where(
+                                 p => p.ReadyStatus != Enums.ReadyStatus.ProductionReady)
+                                      .OrderByDescending(p => p.Created);
+
+
+            return View(await posts.ToListAsync());
         }
+
+        // GET: Posts
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Posts.ToListAsync());
+        //}
 
         //BlogPostIndex
         public async Task<IActionResult> BlogPostIndex(int? id, int? page)
@@ -88,13 +99,23 @@ namespace BlogYou.Controllers
                 .ThenInclude(c => c.BlogUser)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
+            var dataVM = new ViewModels.PostDetailViewModel()
+            {
+                Post = post,
+                Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList()
+            };
+
 
             if (post == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+
+            return View(dataVM);
         }
 
         // GET: Posts/Create
