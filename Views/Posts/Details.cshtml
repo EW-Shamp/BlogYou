@@ -51,7 +51,7 @@
                     <label class="h2 form-label font-weight-bold">Add Comment</label>
                     <textarea name="body" class="form-control" rows="10"></textarea>
                 </div>
-                <button type="submit" class="btn btn-dark note-btn-block btn-small">Submit</button>
+                <button type="submit" class="btn kustom-button mt-2 note-btn-block btn-sm">Submit</button>
 
             </form>
         }
@@ -71,7 +71,8 @@
 @{ var counter = 0; }
 @foreach (var comment in Model.Comments)
 {
-    <div class="media media-border p-0 mb-2 bg-light">
+    <div class="media media-border p-0 mb-2 bg-light mt-2 row">
+        <div class="col-6 offset-3">
         <img class="mr-3 mt-3 rounded-circle" style="width:60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
         <div class="media-body">
             <h4>@comment.BlogUser.FullName</h4>
@@ -97,39 +98,48 @@
                 @if (comment.Moderated is not null)
                 {
                     <p>@comment.ModeratedBody</p>
+                    <hr />
                 }
                 else
                 {
-                    <p>@comment.Body</p>               }
+                    <p>@comment.Body</p>
+                    <hr />
+                }
             </div>
+       
             
 
             <!-- Rendering the Edit Button-->
             @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
-                <hr />
-                <button data-bs-toggle="modal" data-bs-target="@($"#editModal{counter}")" class="btn-sm btn-dark float-end font-weight-bold">Edit</button>
+                <div class="row row-cols-1">
+                    <div class="col py-2">
+                        <button data-bs-toggle="modal" data-bs-target="@($"#editModal{counter}")" class="btn-sm btn-dark mb-2 float-end font-weight-bold">Edit</button>
+                    </div>
+                </div>
             }
 
             <!-- Rendering the Moderate and Delete Buttons -->
             @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
             {
-                <hr />
-                <div class="row">
-                    <div class="col-2">
+                
+                <div class="row row-cols-1">
+                    <div class="col py-2">
                         <button class="btn-sm btn-dark note-btn-block font-weight-bold" data-bs-toggle="modal" data-bs-target="@($"#moderateModal{counter}")" >MODERATE</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col py-2">
                         <form asp-action="Delete" asp-controller="Comments">
                             @Html.Hidden("Id", comment.Id)
                             @Html.Hidden("Slug", comment.Post.Slug)
-                            <button type="submit" class="btn-sm btn-dark note-btn-block font-weight-bold ">DELETE</button>
+                            <button type="submit" class="btn-sm btn-danger note-btn-block font-weight-bold ">DELETE</button>
                         </form>
                     </div>
                 </div>
             }
         </div>
+        </div>
     </div>
+    
 
     @*Modals*@
     <div id="@($"editModal{counter}")" class="modal">
