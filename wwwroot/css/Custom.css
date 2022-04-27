@@ -10,6 +10,13 @@ option{
     font-weight: bolder;
 }
 
+.navbar {
+    background: #C02425 !important; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #F0CB35, #C02425) !important; /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #F0CB35, #C02425) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
 div.swal2-container.swal2-center.swal2-backdrop-show > div {
     outline: 4px solid black;
     border: 2px solid red;

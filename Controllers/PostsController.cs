@@ -80,6 +80,13 @@ namespace BlogYou.Controllers
                 .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+            Blog currentBlog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id);
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(currentBlog.ImageData, currentBlog.ContentType);
+            ViewData["MainText"] = currentBlog.Name;
+            ViewData["SubText"] = currentBlog.Description;
+
+
             //ViewData["HeaderImage"] = _imageService.DecodeImage(blog.ImageData, blog.ContentType);
             //ViewData["MainText"] = blog.Name;
             //ViewData["SubText"] = blog.Description;

@@ -23,31 +23,48 @@
 <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-        <div class="container px-4 px-lg-5">
+        <div class="container px-4 px-lg-0">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">BlogYou</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
+            <div class="collapse navbar-collapse px-5" id="navbarResponsive">
+                
                 <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @*<li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Index">Home</a></li>*@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="About">About</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Create">New Blog</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Posts" asp-action="Create">New Post</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Blogs" asp-action="Index">Unfinished Blogs</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Posts" asp-action="Index">Unfinished Posts</a></li>
-                    }
+
                     @if (User.IsInRole("Moderator"))
                     {
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" asp-controller="Comments" asp-action="Index">Unmoderated Comments</a></li>
                     }
-                    
+
                 </ul>
+                
+                
                 <partial name="_LoginPartial" />
+                @if (User.IsInRole("Administrator"))
+                {
+                    <div class="dropdown">
+                        <a class="btn px-lg-3 py-3 py-lg-4 dropdown-toggle" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" asp-controller="Blogs" asp-action="Create">New Blog</a></li>
+                            <li><a class="dropdown-item" asp-controller="Posts" asp-action="Create">New Post</a></li>
+                            <li><a class="dropdown-item" asp-controller="Blogs" asp-action="Index">Unfinished Blogs</a></li>
+                            <li><a class="dropdown-item" asp-controller="Posts" asp-action="Index">Unfinished Posts</a></li>
+                        </ul>
+                    </div>
+                }
+                <form class="" asp-action="SearchIndex" asp-controller="Posts">
+                    <div class="input-group-sm">
+                        <input type="text" name="SearchTerm" class="rounded-start" placeholder="Search Term">
+                        <button class="btn btn-secondary rounded-end text-white" type="submit">Search</button>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>
@@ -60,14 +77,14 @@
                         <h1>@ViewData["MainText"]</h1>
                         <span class="subheading">@ViewData["SubText"]</span>
 
-                        <form asp-action="SearchIndex" asp-controller="Posts">
+                        @*<form asp-action="SearchIndex" asp-controller="Posts">
                             <div class="input-group mt-5">
                                 <input type="text" name="SearchTerm" class="form-control search-term" placeholder="Search Term">
                                 <div class="input-group-append">
                                     <button class="btn search-button" type="submit">Search</button>
                                 </div>
                             </div>
-                        </form>
+                        </form>*@
 
                     </div>
                 </div>
